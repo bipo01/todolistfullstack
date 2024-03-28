@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>To-Do List</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>To-Do List</h1>
+            <form action="/add" method="post">
+                <input
+                    type="text"
+                    name="activity"
+                    id="activity"
+                    required
+                    autocomplete="off"
+                />
+                <input type="submit" name="submit" id="submitBtn" value="ADD" />
+            </form>
+
+            <% if (atividades.length > 0) { %>
+            <ol>
+                <% for( let i = 0; i < atividades.length; i++ ) { %>
+                <li>
+                    <form
+                        id="itemASumir<%=atividades[i].id%>"
+                        action="/delete"
+                        method="post"
+                    >
+                        <input
+                            type="hidden"
+                            name="deletado"
+                            value="<%= atividades[i].id %>"
+                        />
+                        <input
+                            type="submit"
+                            value="<%= atividades[i].activity%>"
+                        />
+                        <span
+                            onclick="toggleForm('<%=atividades[i].id %>')"
+                            class="spanEdit"
+                            >✏️</span
+                        >
+                    </form>
+
+                    <form
+                        id="idAtividade<%=atividades[i].id %>"
+                        class="hidden"
+                        action="/edit"
+                        method="post"
+                    >
+                        <input
+                            type="hidden"
+                            name="idEditado"
+                            value="<%=atividades[i].id %>"
+                        />
+                        <input
+                            class="inputEditar"
+                            type="text"
+                            name="editado"
+                            id="idInput<%=atividades[i].id %>"
+                            placeholder="<%= atividades[i].activity%>"
+                        />
+                        <input id="btnEnviar" type="submit" value="✅" />
+                    </form>
+                </li>
+                <% } %>
+            </ol>
+            <% } %>
+        </div>
+
+        <script>
+            function toggleForm(indexOfAtv) {
+                console.log(
+                    document.querySelector("#idAtividade" + String(indexOfAtv))
+                );
+                console.log(indexOfAtv);
+                document
+                    .querySelector(`#idAtividade${indexOfAtv}`)
+                    .classList.remove("hidden");
+
+                document
+                    .querySelector(`#itemASumir${indexOfAtv}`)
+                    .classList.add("hidden");
+            }
+        </script>
+    </body>
+</html>
