@@ -10,11 +10,7 @@ const port = 3000;
 env.config();
 
 const db = new pg.Client({
-    user: process.env.PG_USER,
-    password: process.env.PG_PASSWORD,
-    database: process.env.PG_DATABASE,
-    host: process.env.PG_HOST,
-    port: process.env.PG_PORT,
+    connectionString: process.env.PG_URL,
 });
 
 db.connect();
@@ -27,7 +23,7 @@ app.get("/", async (req, res) => {
     const result = await db.query("SELECT * FROM todolist ORDER BY id ");
 
     const atividades = result.rows.map((item) => item);
-
+    console.log(atividades);
     res.render("index.ejs", { atividades: atividades });
 });
 
@@ -35,7 +31,7 @@ app.post("/add", (req, res) => {
     const atividade = req.body.activity;
 
     if (atividade.trim().length) {
-        db.query("INSERT INTO todolist (activity) VALUES ($1)", [atividade]);
+        db.query("INSERT INTO todolist (atividade) VALUES ($1)", [atividade]);
     }
 
     res.redirect("/");
@@ -56,7 +52,7 @@ app.post("/edit", (req, res) => {
     console.log(editado);
 
     if (editado.length > 0) {
-        db.query("UPDATE todolist SET activity = $1 WHERE id = $2", [
+        db.query("UPDATE todolist SET atividade = $1 WHERE id = $2", [
             editado,
             id,
         ]);
