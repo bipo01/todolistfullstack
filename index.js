@@ -19,12 +19,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(cors());
 
+app.set("views", "./views");
+app.set("view engine", "ejs");
+
 app.get("/", async (req, res) => {
     const result = await db.query("SELECT * FROM todolist ORDER BY id ");
 
     const atividades = result.rows.map((item) => item);
     console.log(atividades);
-    res.render("index.ejs", { atividades: atividades });
+    res.render("index", { atividades: atividades });
 });
 
 app.post("/add", (req, res) => {
