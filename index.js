@@ -4,6 +4,10 @@ import ejs from "ejs";
 import pg from "pg";
 import cors from "cors";
 import env from "dotenv";
+import path from "path";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 3000;
@@ -19,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(cors());
 
-app.set("views", "./views");
+server.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.get("/", async (req, res) => {
