@@ -5,6 +5,10 @@ import pg from "pg";
 import cors from "cors";
 import env from "dotenv";
 
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const app = express();
 const port = 3000;
 env.config();
@@ -21,12 +25,14 @@ app.use(cors());
 
 app.set("view engine", "ejs");
 
+console.log(__dirname);
+
 app.get("/", async (req, res) => {
     const result = await db.query("SELECT * FROM todolist ORDER BY id ");
 
     const atividades = result.rows.map((item) => item);
     console.log(atividades);
-    res.render("index", { atividades: atividades });
+    res.render(__dirname + "/views/index", { atividades: atividades });
 });
 
 app.post("/add", (req, res) => {
